@@ -79,12 +79,12 @@ class CodeQualityAgent:
         return result
 
 
-def check_code_quality(openai_key, requirement_path, output_path, verbose=False):
+def check_code_quality(openai_key, requirement_path, output_path=None, verbose=False):
     """
     Get the code quality report and the prompts used for succeeding quality issue fixing LLM
     :param openai_key: openai key
     :param requirement_path: file path of the requirements.txt
-    :param output_path: output path
+    :param output_path: output path, defaults to None
     :param verbose: if print intermediate details
     :return: json format results
     """
@@ -94,11 +94,13 @@ def check_code_quality(openai_key, requirement_path, output_path, verbose=False)
         requirement = [[one_line.strip('\r\n')] for one_line in file_r]
         requirement = [(one_line[0].split('==')[0].lower(), one_line[0].split('==')[1].lower())for one_line in requirement]
         result = CodeQualityAgent.run(requirement, verbose)
-        print(result)
 
         # save file to output path
-        with open(output_path, 'w', encoding='utf-8') as json_file:
-            json.dump(result, json_file, ensure_ascii=False, indent=4)
+        if output_path:
+            with open(output_path, 'w', encoding='utf-8') as json_file:
+                json.dump(result, json_file, ensure_ascii=False, indent=4)
+
+        return result
 
 def main():
     with open(f'{root}/../ini_file/OpenAI/openaikey.txt', 'r') as file_r:
@@ -108,8 +110,10 @@ def main():
         verbose = False
 
         # check requirement.txt
-        check_code_quality(requirement_path=requirement_file, openai_key=key, verbose=verbose,
+        result = check_code_quality(requirement_path=requirement_file, openai_key=key, verbose=verbose,
                            output_path=f'{root}/data_process/output/result.json')
+
+        print(result)
 
 
 if __name__ == '__main__':

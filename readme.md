@@ -31,7 +31,7 @@ This project provides a Python interface to check code quality, including softwa
 
 ## Usage
 
-The program reads dependencies from a `requirements.txt` file, checks their code quality, and outputs a report as a JSON file.
+The program reads dependencies from a `requirements.txt` file, checks their code quality, and outputs a JSON format report.
 
 1. **Prepare Your Requirements File**: Prepare a `requirements.txt` file with the necessary dependencies.
    
@@ -47,7 +47,7 @@ The program reads dependencies from a `requirements.txt` file, checks their code
            verbose = False
 
            # check requirement.txt
-           check_code_quality(requirement_path=requirement_file, openai_key=key, verbose=verbose,
+           result = check_code_quality(requirement_path=requirement_file, openai_key=key, verbose=verbose,
                               output_path=f'{root}/data_process/output/result.json')
    ```
 
@@ -57,5 +57,5 @@ The program reads dependencies from a `requirements.txt` file, checks their code
 
 - `openai_key`: The OpenAI API key for accessing the service.
 - `requirement_path`: Path to the `requirements.txt` file.
-- `output_path`: Path to save the resulting JSON report.
+- `output_path`: Optional string. Path to save the resulting JSON report. If None, the result will not be saved.
 - `verbose`: Optional boolean. If set to `True`, prints intermediate details.
